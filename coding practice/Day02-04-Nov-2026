@@ -1,0 +1,73 @@
+Install Ansible & Enable Nginx
+ - name: Install and start Nginx on Pathnex
+   host: all
+   become: yes
+
+
+   tasks: 
+
+      - name: Install Nginx
+        yum:
+           - name: nginx
+             state: present
+
+      - name: Enable Nginx
+        service:
+          - service:  
+  		name: nginx
+		state: started
+		enabled: yes
+
+# Terraform - EC2 with Tags
+provider "aws" {
+	region = "ap-south-1b"
+}
+
+resource "aws_instance" "KhageshEC2" {
+	ami	      = "ami-1234abc1234abc"
+	instance_type = "t2.micro"
+tags = {
+	name        = "Khagesh EC2 server"
+	environment = "Devlopment"
+      	owner	    = "Khagesh-Group"
+ }
+}
+
+
+# Kubernetes — Deployment with 2 Replicas
+
+	apiVersion: apps/v1
+	kind: Deployment
+	metadata: 
+ 		name: khagesh-deployment
+	spec:
+		replicas: 2
+		selector:
+			matchlabels:
+			     app: khagesh-app
+		template: 
+ 			metadata:
+     			  labels:
+			     app: pathnex-app
+ 		spec: 
+		    containers: 
+			- name: app
+ 			  image: nginx
+			  ports: 
+				containerPort: 80
+#Shell Script — Disk Usage
+
+#!/bin/bash
+df -h
+
+#Docker Images & Containers
+
+docker pull ubuntu
+docker images
+docker ps -a
+
+# Docker File
+
+FROM ubuntu:22.04
+RUN apt upadate
+CMD ["echo" , "Hello Khagesh"]

@@ -1,0 +1,65 @@
+#Ansible — Install Apache and Start Service
+- name: Install and start Apache
+  host: all
+  become: yes
+  tasks:
+	-name: Install apache
+	 yum:
+  	     name: httpd
+	     state: present
+	-name: Start apache
+	 service: httpd
+	 state: present
+ 	 enabled: yes
+
+#Terraform — EC2 Instance (t3.medium)
+
+provider "aws" {
+  region "ap-south-1a" 
+   }
+
+resource "aws_instance" "KhageshEC2" {
+	ami           = "ami-1234abcd1234abcd"
+	instance_type = "t3.medium"
+        tags = {
+	    Name = "KhageshEC2.t3"
+
+
+}
+
+}
+
+#Kubernetes — Create a ReplicaSet with 3 Replicas
+
+apiVersion : apps/v1
+kind: ReplicaSet
+metadata:
+	name: pathnex-replicaSet
+spec: 
+   replicas: 3
+   selector:
+  	matchLabels:
+	     app: pathnex-app
+   templates:
+ 	metadata:
+ 	  labels:
+		app: pathnex-app
+spec: 
+   container:
+   - name: app
+     image: nginx
+     ports:
+        - containersPort: 80
+
+Shell Script — User Info
+#!/bin/bash
+echo "Current user: $(whoami)"
+echo "current groups: $(groups)"
+
+# Docker File for Nginx Web Server
+FROM nginx:latest
+COPY index.html /usr/share/nginx/html/index.html
+
+# HTML
+<h1> Hello Khagesh Pathak </h1>
+
